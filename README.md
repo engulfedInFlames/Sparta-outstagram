@@ -2,4 +2,4 @@
 
 Django, DRF, Simple JWT💕
 
-Simple login feature which can be done with email authorization
+Simple login feature which can be done with email authorization.
