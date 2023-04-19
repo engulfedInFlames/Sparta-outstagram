@@ -49,3 +49,9 @@ class UserSerializer(ModelSerializer):
         user.save()
 
         return user
+
+
+class TinyUserSerializer(ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = "email",

@@ -48,8 +48,6 @@ const onClickTokenLogin = async () => {
       },
     })
   ).json();
-
-  console.log(json);
 };
 
 loginBtn.addEventListener("click", onClickLogin);

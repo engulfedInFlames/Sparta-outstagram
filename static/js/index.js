@@ -1,5 +1,7 @@
 window.onload = () => {
   console.log("홈 페이지");
+  console.log(localStorage.getItem("access"));
+
   const payload = localStorage.getItem("payload");
   const parsed_payload = JSON.parse(payload);
 
