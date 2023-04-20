@@ -12,7 +12,7 @@ from comments.serializers import CommentSerializer
 
 
 class Posts(APIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         posts = Post.objects.all()
@@ -25,13 +25,13 @@ class Posts(APIView):
         if serializer.is_valid():
             post = serializer.save(user=request.user)
             serializer = PostSerializer(post)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PostDetail(APIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self, id):
         return get_object_or_404(Post, id=id)

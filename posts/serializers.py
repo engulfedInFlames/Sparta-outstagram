@@ -33,7 +33,7 @@ class PostSerializer(ModelSerializer):
     comments = SerializerMethodField(
         read_only=True,
     )
-    like_user = StringRelatedField(many=True,)
+    like_users = StringRelatedField(many=True,)
 
     def get_comments(self, post):
         # 다른 필드들도 보여주고 싶을 때는 CommentSerializer, 또는 TinyCommentSerializer를 사용
