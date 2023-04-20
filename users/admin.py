@@ -65,6 +65,7 @@ class CustomUserAdmin(BaseUserAdmin):
                 "fields": (
                     "email",
                     "password",
+                    "followings",
                 ),
                 "classes": "wide",
             },

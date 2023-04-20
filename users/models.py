@@ -32,12 +32,17 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
+
     username = None
     email = models.EmailField(
         max_length=240,
         validators=[validate_email],
         unique=True,
     )
+
+    # symmetrical: ManyToManyField에서 자기 자신을 가리킬 때만 사용; True일 때는 source가 target을 참조하면, target도 source를 대칭처럼 참조한다. False이면 비대칭이 된다.
+    followings = models.ManyToManyField(
+        "self", symmetrical=False, related_name="followers", blank=True,)
 
     objects = CustomUserManager()
 

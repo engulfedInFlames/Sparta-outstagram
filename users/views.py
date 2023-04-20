@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import CustomUser
-from .serializers import UserSerializer, CustomTokenObtainPairSerializer
+from .serializers import UserSerializer, UserDetailSerializer,  CustomTokenObtainPairSerializer
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -31,23 +31,24 @@ class Users(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class User(APIView):
-    permission_classes = [IsAuthenticated]
+class UserDetail(APIView):
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, id):
         return get_object_or_404(CustomUser, id=id)
 
     def get(self, request, id):
         user = self.get_object(id)
-        serializer = UserSerializer(user)
+        serializer = UserDetailSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, id):
         user = self.get_object(id)
-        serializer = UserSerializer(user, data=request.data, partial=True)
+        serializer = UserDetailSerializer(
+            user, data=request.data, partial=True,)
         if serializer.is_valid():
             user = serializer.save()
-            serializer = UserSerializer(user)
+            serializer = UserDetailSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -56,6 +57,20 @@ class User(APIView):
         user = self.get_object(id)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserFollowings(APIView):
+    # permission_classes=[IsAuthenticated]
+
+    def post(self, request, id):
+        you = get_object_or_404(CustomUser, id=id)
+        me = request.user
+        if me in you.following.all():
+            you.following.remove(me.id)
+            return Response("팔로우를 취소했습니다.", status=status.HTTP_200_OK)
+        else:
+            you.following.add(me.id)
+            return Response("팔로우 했습니다.", status=status.HTTP_200_OK)
 
 
 class Home(APIView):
